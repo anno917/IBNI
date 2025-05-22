@@ -10,15 +10,53 @@ import { PageTitle } from "@/components/ui/page-title"
 
 interface ComparePageProps {
   type?: "schools" | "teachers"
-  navigateTo?: (page: string) => void
+  navigateTo?: (page: string, type?: string) => void
+}
+
+interface School {
+  id: number
+  name: string
+  type: string
+  rating: number
+  reviewCount: number
+  location: string
+  image: string
+  students: number
+  teachers: number
+  founded: number
+  grades: string
+  fees: string
+  facilities: string[]
+  programs: string[]
+  languages: string[]
+  admissionRate: string
+  studentTeacherRatio: string
+}
+
+interface Teacher {
+  id: number
+  name: string
+  subjects: string[]
+  rating: number
+  reviewCount: number
+  location: string
+  image: string
+  experience: number
+  education: string
+  certifications: string[]
+  teachingStyle: string
+  availability: string
+  hourlyRate: string
+  languages: string[]
+  specialties: string[]
 }
 
 export default function ComparePage({ type = "schools", navigateTo }: ComparePageProps) {
   const [compareType, setCompareType] = useState<"schools" | "teachers">(type)
-  const [compareItems, setCompareItems] = useState<any[]>([])
+  const [compareItems, setCompareItems] = useState<(School | Teacher)[]>([])
 
   // Mock data for schools
-  const mockSchools = [
+  const mockSchools: School[] = [
     {
       id: 1,
       name: "Oakridge Elementary",
@@ -79,7 +117,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
   ]
 
   // Mock data for teachers
-  const mockTeachers = [
+  const mockTeachers: Teacher[] = [
     {
       id: 1,
       name: "Dr. Sarah Johnson",
@@ -148,7 +186,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
 
   const handleGoBack = () => {
     if (navigateTo) {
-      navigateTo("find-resources", compareType)
+      navigateTo("find-resources")
     }
   }
 
@@ -286,7 +324,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                   {compareItems.map((school) => (
                     <td key={`${school.id}-programs`} className="p-4 text-center border-b">
                       <div className="flex flex-wrap justify-center gap-1">
-                        {school.programs.map((program, index) => (
+                        {school.programs.map((program: string, index: number) => (
                           <Badge key={index} variant="outline" className="mb-1">
                             {program}
                           </Badge>
@@ -300,7 +338,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                   {compareItems.map((school) => (
                     <td key={`${school.id}-facilities`} className="p-4 text-center border-b">
                       <div className="flex flex-wrap justify-center gap-1">
-                        {school.facilities.map((facility, index) => (
+                        {school.facilities.map((facility: string, index: number) => (
                           <Badge key={index} variant="outline" className="mb-1">
                             {facility}
                           </Badge>
@@ -394,7 +432,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                   {compareItems.map((teacher) => (
                     <td key={`${teacher.id}-certifications`} className="p-4 text-center border-b">
                       <div className="flex flex-wrap justify-center gap-1">
-                        {teacher.certifications.map((cert, index) => (
+                        {teacher.certifications.map((cert: string, index: number) => (
                           <Badge key={index} variant="outline" className="mb-1">
                             {cert}
                           </Badge>
@@ -440,7 +478,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                   {compareItems.map((teacher) => (
                     <td key={`${teacher.id}-specialties`} className="p-4 text-center border-b">
                       <div className="flex flex-wrap justify-center gap-1">
-                        {teacher.specialties.map((specialty, index) => (
+                        {teacher.specialties.map((specialty: string, index: number) => (
                           <Badge key={index} variant="outline" className="mb-1">
                             {specialty}
                           </Badge>
