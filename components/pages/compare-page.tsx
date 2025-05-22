@@ -51,6 +51,15 @@ interface Teacher {
   specialties: string[]
 }
 
+// Add type guard functions
+function isSchool(item: School | Teacher): item is School {
+  return 'type' in item && 'grades' in item;
+}
+
+function isTeacher(item: School | Teacher): item is Teacher {
+  return 'subjects' in item && 'experience' in item;
+}
+
 export default function ComparePage({ type = "schools", navigateTo }: ComparePageProps) {
   const [compareType, setCompareType] = useState<"schools" | "teachers">(type)
   const [compareItems, setCompareItems] = useState<(School | Teacher)[]>([])
@@ -218,7 +227,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
               <thead>
                 <tr>
                   <th className="w-1/4 p-4 text-left bg-gray-50 border-b"></th>
-                  {compareItems.map((school) => (
+                  {compareItems.filter(isSchool).map((school) => (
                     <th key={school.id} className="p-4 text-center border-b">
                       <Card className="border-0 shadow-none">
                         <CardContent className="p-0 flex flex-col items-center">
@@ -257,7 +266,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
               <tbody>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Grades</td>
-                  {compareItems.map((school) => (
+                  {compareItems.filter(isSchool).map((school) => (
                     <td key={`${school.id}-grades`} className="p-4 text-center border-b">
                       {school.grades}
                     </td>
@@ -265,7 +274,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Students</td>
-                  {compareItems.map((school) => (
+                  {compareItems.filter(isSchool).map((school) => (
                     <td key={`${school.id}-students`} className="p-4 text-center border-b">
                       {school.students}
                     </td>
@@ -273,7 +282,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Teachers</td>
-                  {compareItems.map((school) => (
+                  {compareItems.filter(isSchool).map((school) => (
                     <td key={`${school.id}-teachers`} className="p-4 text-center border-b">
                       {school.teachers}
                     </td>
@@ -281,7 +290,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Student-Teacher Ratio</td>
-                  {compareItems.map((school) => (
+                  {compareItems.filter(isSchool).map((school) => (
                     <td key={`${school.id}-ratio`} className="p-4 text-center border-b">
                       {school.studentTeacherRatio}
                     </td>
@@ -289,7 +298,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Founded</td>
-                  {compareItems.map((school) => (
+                  {compareItems.filter(isSchool).map((school) => (
                     <td key={`${school.id}-founded`} className="p-4 text-center border-b">
                       {school.founded}
                     </td>
@@ -297,7 +306,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Fees</td>
-                  {compareItems.map((school) => (
+                  {compareItems.filter(isSchool).map((school) => (
                     <td key={`${school.id}-fees`} className="p-4 text-center border-b">
                       {school.fees}
                     </td>
@@ -305,7 +314,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Admission Rate</td>
-                  {compareItems.map((school) => (
+                  {compareItems.filter(isSchool).map((school) => (
                     <td key={`${school.id}-admission`} className="p-4 text-center border-b">
                       {school.admissionRate}
                     </td>
@@ -313,7 +322,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Languages</td>
-                  {compareItems.map((school) => (
+                  {compareItems.filter(isSchool).map((school) => (
                     <td key={`${school.id}-languages`} className="p-4 text-center border-b">
                       {school.languages.join(", ")}
                     </td>
@@ -321,7 +330,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Programs</td>
-                  {compareItems.map((school) => (
+                  {compareItems.filter(isSchool).map((school) => (
                     <td key={`${school.id}-programs`} className="p-4 text-center border-b">
                       <div className="flex flex-wrap justify-center gap-1">
                         {school.programs.map((program: string, index: number) => (
@@ -335,7 +344,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Facilities</td>
-                  {compareItems.map((school) => (
+                  {compareItems.filter(isSchool).map((school) => (
                     <td key={`${school.id}-facilities`} className="p-4 text-center border-b">
                       <div className="flex flex-wrap justify-center gap-1">
                         {school.facilities.map((facility: string, index: number) => (
@@ -349,7 +358,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b"></td>
-                  {compareItems.map((school) => (
+                  {compareItems.filter(isSchool).map((school) => (
                     <td key={`${school.id}-action`} className="p-4 text-center border-b">
                       <Button onClick={() => navigateTo && navigateTo("institutions-profile")}>View Profile</Button>
                     </td>
@@ -366,7 +375,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
               <thead>
                 <tr>
                   <th className="w-1/4 p-4 text-left bg-gray-50 border-b"></th>
-                  {compareItems.map((teacher) => (
+                  {compareItems.filter(isTeacher).map((teacher) => (
                     <th key={teacher.id} className="p-4 text-center border-b">
                       <Card className="border-0 shadow-none">
                         <CardContent className="p-0 flex flex-col items-center">
@@ -405,7 +414,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
               <tbody>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Subjects</td>
-                  {compareItems.map((teacher) => (
+                  {compareItems.filter(isTeacher).map((teacher) => (
                     <td key={`${teacher.id}-subjects`} className="p-4 text-center border-b">
                       {teacher.subjects.join(", ")}
                     </td>
@@ -413,7 +422,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Experience</td>
-                  {compareItems.map((teacher) => (
+                  {compareItems.filter(isTeacher).map((teacher) => (
                     <td key={`${teacher.id}-experience`} className="p-4 text-center border-b">
                       {teacher.experience} years
                     </td>
@@ -421,7 +430,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Education</td>
-                  {compareItems.map((teacher) => (
+                  {compareItems.filter(isTeacher).map((teacher) => (
                     <td key={`${teacher.id}-education`} className="p-4 text-center border-b">
                       {teacher.education}
                     </td>
@@ -429,7 +438,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Certifications</td>
-                  {compareItems.map((teacher) => (
+                  {compareItems.filter(isTeacher).map((teacher) => (
                     <td key={`${teacher.id}-certifications`} className="p-4 text-center border-b">
                       <div className="flex flex-wrap justify-center gap-1">
                         {teacher.certifications.map((cert: string, index: number) => (
@@ -443,7 +452,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Teaching Style</td>
-                  {compareItems.map((teacher) => (
+                  {compareItems.filter(isTeacher).map((teacher) => (
                     <td key={`${teacher.id}-style`} className="p-4 text-center border-b">
                       {teacher.teachingStyle}
                     </td>
@@ -451,7 +460,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Availability</td>
-                  {compareItems.map((teacher) => (
+                  {compareItems.filter(isTeacher).map((teacher) => (
                     <td key={`${teacher.id}-availability`} className="p-4 text-center border-b">
                       {teacher.availability}
                     </td>
@@ -459,7 +468,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Hourly Rate</td>
-                  {compareItems.map((teacher) => (
+                  {compareItems.filter(isTeacher).map((teacher) => (
                     <td key={`${teacher.id}-rate`} className="p-4 text-center border-b">
                       {teacher.hourlyRate}
                     </td>
@@ -467,7 +476,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Languages</td>
-                  {compareItems.map((teacher) => (
+                  {compareItems.filter(isTeacher).map((teacher) => (
                     <td key={`${teacher.id}-languages`} className="p-4 text-center border-b">
                       {teacher.languages.join(", ")}
                     </td>
@@ -475,7 +484,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b">Specialties</td>
-                  {compareItems.map((teacher) => (
+                  {compareItems.filter(isTeacher).map((teacher) => (
                     <td key={`${teacher.id}-specialties`} className="p-4 text-center border-b">
                       <div className="flex flex-wrap justify-center gap-1">
                         {teacher.specialties.map((specialty: string, index: number) => (
@@ -489,7 +498,7 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
                 </tr>
                 <tr>
                   <td className="p-4 font-medium bg-gray-50 border-b"></td>
-                  {compareItems.map((teacher) => (
+                  {compareItems.filter(isTeacher).map((teacher) => (
                     <td key={`${teacher.id}-action`} className="p-4 text-center border-b">
                       <Button onClick={() => navigateTo && navigateTo("teachers-profile")}>View Profile</Button>
                     </td>
