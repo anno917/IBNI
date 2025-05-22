@@ -1,213 +1,182 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { NavBar } from "@/components/layout/nav-bar"
-import HomePage from "@/components/pages/home-page"
-import UserTypePage from "@/components/pages/user-type-page"
-import SignUpPage from "@/components/pages/signup-page"
-import LoginPage from "@/components/pages/login-page"
-import BookDemoPage from "@/components/pages/book-demo-page"
-import FindResourcePage from "@/components/pages/find-resource-page"
-import TrackKidPage from "@/components/pages/track-kid-page"
-import MyCoursesPage from "@/components/pages/my-courses-page"
-import TrackProgressPage from "@/components/pages/track-progress-page"
-import IntegratedStorePage from "@/components/pages/integrated-store-page"
-import IntegratedBulkPurchasePage from "@/components/pages/integrated-bulk-purchase-page"
-import IntegratedBackpackBuilderPage from "@/components/pages/integrated-backpack-builder-page"
-import IntegratedSpecialOffersPage from "@/components/pages/integrated-special-offers-page"
-import TeacherProfilePage from "@/components/pages/teacher-profile-page"
-import TeacherProfileKazi from "@/components/pages/teacher-profile-kazi"
-import TeacherProfileBenali from "@/components/pages/teacher-profile-benali"
-import TeacherProfileHadj from "@/components/pages/teacher-profile-hadj"
-import TeacherProfileMansouri from "@/components/pages/teacher-profile-mansouri"
-import TeacherProfileBouaziz from "@/components/pages/teacher-profile-bouaziz"
-import ManageClassesPage from "@/components/pages/manage-classes-page"
-import SchoolProfilePage from "@/components/pages/school-profile-page"
-import SchoolProfileEIA from "@/components/pages/school-profile-eia"
-import SchoolProfileElFeth from "@/components/pages/school-profile-elfeth"
-import SchoolProfileDescartes from "@/components/pages/school-profile-descartes"
-import SchoolProfilePolytechnique from "@/components/pages/school-profile-polytechnique"
-import SchoolProfileAnnaba from "@/components/pages/school-profile-annaba"
-import ManageSchoolPage from "@/components/pages/manage-school-page"
+import React from "react"
+import { motion } from "framer-motion"
+import { Clock, Tag, Percent, Star, ShoppingCart } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import ProductCard from "@/components/store/product-card"
 
-import AboutUsPage from "@/components/pages/about-us-page"
-import ContactUsPage from "@/components/pages/contact-us-page"
-import UserGuidePage from "@/components/pages/user-guide-page"
-import OurPricesPage from "@/components/pages/our-prices-page"
-import ComparePage from "@/components/pages/compare-page"
-import InvestInIBNIPage from "@/components/pages/invest-in-ibni-page"
-
-export default function App() {
-  const [currentPage, setCurrentPage] = useState("home")
-  const [userType, setUserType] = useState<"parent" | "student" | "teacher" | "institution" | null>(null)
-  const [initialTab, setInitialTab] = useState<string | undefined>(undefined)
-  const [isScrolled, setIsScrolled] = useState(false)
-  const lastScrollY = useRef(0)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY
-      if (currentScrollY > 100) {
-        setIsScrolled(true)
-      } else {
-        setIsScrolled(false)
-      }
-      lastScrollY.current = currentScrollY
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  // Check for page query parameter on initial load
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const urlParams = new URLSearchParams(window.location.search)
-      const pageParam = urlParams.get('page')
-      const typeParam = urlParams.get('type')
-
-      if (pageParam) {
-        setCurrentPage(pageParam)
-
-        // If we have a type parameter for find-resources, set it as the initial tab
-        if (pageParam === 'find-resources' && typeParam) {
-          setInitialTab(typeParam)
-        }
-
-        // Clean up the URL
-        window.history.replaceState({}, '', '/')
-      }
-    }
-  }, [])
-
-  const navigateTo = (page: string, tab?: string) => {
-    // Check if this is a user type page
-    if (page === "parents" || page === "students" || page === "teachers" || page === "institutions") {
-      setCurrentPage("user-type")
-      setUserType(page.slice(0, -1) as "parent" | "student" | "teacher" | "institution")
-      return
-    }
-
-    // Special handling for find-resources page
-    if (page === "find-resources") {
-      setCurrentPage(page)
-      // If a tab is provided, use it, otherwise keep the current tab
-      setInitialTab(tab || initialTab)
-      window.scrollTo(0, 0)
-      return
-    }
-
-    setCurrentPage(page)
-    setInitialTab(tab || undefined)
-    window.scrollTo(0, 0)
+interface CourseProduct {
+  id: string
+  title: string
+  description: string
+  category: string
+  price_dzd: number
+  original_price_dzd?: number
+  thumbnail: string
+  rating?: number
+  stock?: number
+  isNew?: boolean
+  isOnSale?: boolean
+  creator_type?: string
+  creator?: {
+    name: string
+    profile_image?: string
+    logo_image?: string
   }
+  grade_level?: string
+  subject?: string
+  language?: string
+  school_affiliation?: string
+}
 
-  const renderPage = () => {
-    switch (currentPage) {
-      case "home":
-        return <HomePage navigateTo={navigateTo} />
-      case "user-type":
-        return userType ? (
-          <UserTypePage userType={userType} navigateTo={navigateTo} />
-        ) : (
-          <HomePage navigateTo={navigateTo} />
-        )
-      case "signup":
-        return <SignUpPage navigateTo={navigateTo} />
-      case "login":
-        return <LoginPage navigateTo={navigateTo} />
-      case "book-demo":
-        return <BookDemoPage navigateTo={navigateTo} />
-      case "find-resources":
-        return <FindResourcePage initialTab={initialTab} navigateTo={navigateTo} />
-      case "parents-track-kid":
-        return <TrackKidPage />
-      case "parents-my-courses":
-        return <MyCoursesPage userType="parent" />
-      case "students-track-progress":
-        return <TrackProgressPage />
-      case "students-my-courses":
-        return <MyCoursesPage userType="student" />
-      case "teachers-profile":
-        return <TeacherProfilePage navigateTo={navigateTo} showBackButton={false} />
-      case "teacher-profile-kazi":
-        return <TeacherProfileKazi navigateTo={navigateTo} />
-      case "teacher-profile-benali":
-        return <TeacherProfileBenali navigateTo={navigateTo} />
-      case "teacher-profile-hadj":
-        return <TeacherProfileHadj navigateTo={navigateTo} showBackButton={false} />
-      case "teacher-profile-mansouri":
-        return <TeacherProfileMansouri navigateTo={navigateTo} showBackButton={false} />
-      case "teacher-profile-bouaziz":
-        return <TeacherProfileBouaziz navigateTo={navigateTo} showBackButton={false} />
-      case "teachers-manage-classes":
-        return <ManageClassesPage />
-      case "institutions-profile":
-        return <SchoolProfilePage userType="school" navigateTo={navigateTo} showBackButton={false} />
-      case "school-profile-eia":
-        return <SchoolProfileEIA navigateTo={navigateTo} showBackButton={false} />
-      case "school-profile-elfeth":
-        return <SchoolProfileElFeth navigateTo={navigateTo} showBackButton={false} />
-      case "school-profile-descartes":
-        return <SchoolProfileDescartes navigateTo={navigateTo} showBackButton={false} />
-      case "school-profile-polytechnique":
-        return <SchoolProfilePolytechnique navigateTo={navigateTo} showBackButton={false} />
-      case "school-profile-annaba":
-        return <SchoolProfileAnnaba navigateTo={navigateTo} showBackButton={false} />
-      case "school-profile-1":
-        return <SchoolProfilePage userType="parent" navigateTo={navigateTo} showBackButton={false} />
-      case "manage-school-dashboard":
-        return <ManageSchoolPage />
-      case "store":
-        return <IntegratedStorePage navigateTo={navigateTo} />
-      case "store-bulk-purchase":
-        return <IntegratedBulkPurchasePage navigateTo={navigateTo} />
-      case "backpack-builder":
-        return <IntegratedBackpackBuilderPage navigateTo={navigateTo} />
-      case "store-special-offers":
-        return <IntegratedSpecialOffersPage navigateTo={navigateTo} />
-      case "about-us":
-        return <AboutUsPage navigateTo={navigateTo} />
-      case "contact-us":
-        return <ContactUsPage />
-      case "our-prices":
-        return <OurPricesPage userType={userType || "general"} navigateTo={navigateTo} />
-      case "user-guide":
-        return <UserGuidePage userType={userType || "general"} navigateTo={navigateTo} />
-      case "compare":
-        return <ComparePage type={initialTab as "schools" | "teachers" | undefined} />
-      case "invest-in-ibni":
-        return <InvestInIBNIPage />
-      default:
-        return <HomePage navigateTo={navigateTo} />
-    }
+const specialOffers: CourseProduct[] = [
+  {
+    id: "1",
+    title: "Back to School Bundle",
+    description: "Complete set of school supplies with 30% off",
+    category: "School Supplies",
+    price_dzd: 20999,
+    original_price_dzd: 29999,
+    thumbnail: "/images/offers/school-bundle.jpg",
+    rating: 4.8,
+    stock: 50,
+    isOnSale: true
+  },
+  {
+    id: "2",
+    title: "Teacher's Essential Kit",
+    description: "Everything a teacher needs for the classroom",
+    category: "Teacher's Supplies",
+    price_dzd: 14999,
+    original_price_dzd: 19999,
+    thumbnail: "/images/offers/teacher-kit.jpg",
+    rating: 4.9,
+    stock: 30,
+    isOnSale: true
+  },
+  {
+    id: "3",
+    title: "Office Furniture Set",
+    description: "Complete office setup with premium furniture",
+    category: "Office Furniture",
+    price_dzd: 47999,
+    original_price_dzd: 59999,
+    thumbnail: "/images/offers/office-set.jpg",
+    rating: 4.7,
+    stock: 10,
+    isOnSale: true
+  },
+  {
+    id: "4",
+    title: "Math & Language Courses Bundle",
+    description: "Comprehensive courses for primary and secondary students",
+    category: "Courses",
+    price_dzd: 39999,
+    original_price_dzd: 49999,
+    thumbnail: "/images/offers/course-bundle.jpg",
+    rating: 4.9,
+    stock: 100,
+    isOnSale: true,
+    creator_type: "School",
+    creator: {
+      name: "Elite Academy",
+      profile_image: "/images/schools/elite-academy.jpg",
+      logo_image: "/images/schools/elite-academy-logo.png"
+    },
+    grade_level: "Primary & Secondary",
+    subject: "Mathematics & Languages",
+    language: "English & French",
+    school_affiliation: "Elite Academy"
+  }
+]
+
+export default function SpecialOffersPage() {
+  const handleAddToCart = (productId: string, quantity: number) => {
+    // Implement cart functionality
+    console.log(`Adding ${quantity} of product ${productId} to cart`)
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <div 
-        className={`fixed top-0 left-0 right-0 z-[40] transition-transform duration-200 ease-in-out ${
-          (currentPage.startsWith('store') || currentPage.startsWith('backpack-builder')) && isScrolled 
-            ? '-translate-y-full' 
-            : 'translate-y-0'
-        }`}
-      >
-        <NavBar navigateTo={navigateTo} currentPage={currentPage} />
+    <div className="container mx-auto px-4 py-8">
+      {/* Hero Section */}
+      <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-2xl p-8 mb-8 text-white">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-2xl"
+        >
+          <h1 className="text-4xl font-bold mb-4">Special Offers</h1>
+          <p className="text-lg mb-6">
+            Discover amazing deals and exclusive discounts on our best-selling products.
+            Limited time offers that you don't want to miss!
+          </p>
+          <div className="flex items-center gap-4">
+            <Badge variant="secondary" className="bg-white/20 text-white">
+              <Clock className="w-4 h-4 mr-2" />
+              Limited Time
+            </Badge>
+            <Badge variant="secondary" className="bg-white/20 text-white">
+              <Tag className="w-4 h-4 mr-2" />
+              Best Deals
+            </Badge>
+          </div>
+        </motion.div>
       </div>
-      <main className={currentPage.startsWith('store') || currentPage.startsWith('backpack-builder') ? 'pt-[64px]' : ''}>
-        <AnimatePresence mode="wait">
+
+      {/* Featured Offers Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {specialOffers.map((offer, index) => (
           <motion.div
-            key={currentPage}
+            key={offer.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
           >
-            {renderPage()}
+            <ProductCard
+              product={offer}
+              onAddToCart={handleAddToCart}
+              viewMode="grid"
+            />
           </motion.div>
-        </AnimatePresence>
-      </main>
+        ))}
+      </div>
+
+      {/* Additional Sections */}
+      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Flash Sale Section */}
+        <Card className="p-6 bg-orange-50">
+          <h2 className="text-2xl font-bold mb-4">Flash Sale</h2>
+          <p className="text-gray-600 mb-4">
+            Don't miss our daily flash sales with up to 50% off on selected items.
+            New deals every day!
+          </p>
+          <Button variant="outline" className="border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white">
+            View Flash Sales
+          </Button>
+        </Card>
+
+        {/* Newsletter Section */}
+        <Card className="p-6 bg-blue-50">
+          <h2 className="text-2xl font-bold mb-4">Stay Updated</h2>
+          <p className="text-gray-600 mb-4">
+            Subscribe to our newsletter to receive exclusive offers and be the first to know about new deals.
+          </p>
+          <div className="flex gap-2">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <Button className="bg-blue-600 hover:bg-blue-700">
+              Subscribe
+            </Button>
+          </div>
+        </Card>
+      </div>
     </div>
   )
-}
+} 
