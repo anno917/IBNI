@@ -1,10 +1,10 @@
 "use client"
 
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import TeacherProfileKazi from "@/components/pages/teacher-profile-kazi"
 
-export default function TeacherProfileKaziPage() {
+function TeacherProfileKaziContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [showBackButton, setShowBackButton] = useState(false)
@@ -25,4 +25,12 @@ export default function TeacherProfileKaziPage() {
   }
 
   return <TeacherProfileKazi navigateTo={navigateTo} showBackButton={showBackButton} />
+}
+
+export default function TeacherProfileKaziPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <TeacherProfileKaziContent />
+    </Suspense>
+  )
 }

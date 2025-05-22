@@ -6,7 +6,7 @@ import { Clock, Tag, Percent, Star, ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ProductCard } from "@/components/store/product-card"
+import ProductCard from "@/components/store/product-card"
 
 interface CourseProduct {
   id: string

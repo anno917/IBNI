@@ -1,10 +1,10 @@
 "use client"
 
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import TeacherProfileHadj from "@/components/pages/teacher-profile-hadj"
 
-export default function TeacherProfileHadjPage() {
+function TeacherProfileHadjContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [showBackButton, setShowBackButton] = useState(false)
@@ -25,4 +25,12 @@ export default function TeacherProfileHadjPage() {
   }
 
   return <TeacherProfileHadj navigateTo={navigateTo} showBackButton={showBackButton} />
+}
+
+export default function TeacherProfileHadjPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <TeacherProfileHadjContent />
+    </Suspense>
+  )
 }
