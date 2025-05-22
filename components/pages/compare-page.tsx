@@ -173,295 +173,295 @@ export default function ComparePage({ type = "schools", navigateTo }: ComparePag
             <GraduationCap className="h-4 w-4" /> Teachers
           </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="schools" className="mt-0">
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr>
+                  <th className="w-1/4 p-4 text-left bg-gray-50 border-b"></th>
+                  {compareItems.map((school) => (
+                    <th key={school.id} className="p-4 text-center border-b">
+                      <Card className="border-0 shadow-none">
+                        <CardContent className="p-0 flex flex-col items-center">
+                          <img
+                            src={school.image || "/placeholder.svg"}
+                            alt={school.name}
+                            className="w-32 h-32 object-cover rounded-lg mb-3"
+                          />
+                          <h3 className="font-bold text-lg mb-1">{school.name}</h3>
+                          <Badge variant="secondary" className="mb-2">
+                            {school.type}
+                          </Badge>
+                          <div className="flex items-center mb-1">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`w-4 h-4 ${
+                                  i < Math.floor(school.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+                                }`}
+                                strokeWidth={1}
+                              />
+                            ))}
+                            <span className="text-sm ml-1 text-gray-500">
+                              {school.rating} ({school.reviewCount})
+                            </span>
+                          </div>
+                          <div className="flex items-center text-gray-500 text-sm">
+                            <MapPin className="w-3.5 h-3.5 mr-1" /> {school.location}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Grades</td>
+                  {compareItems.map((school) => (
+                    <td key={`${school.id}-grades`} className="p-4 text-center border-b">
+                      {school.grades}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Students</td>
+                  {compareItems.map((school) => (
+                    <td key={`${school.id}-students`} className="p-4 text-center border-b">
+                      {school.students}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Teachers</td>
+                  {compareItems.map((school) => (
+                    <td key={`${school.id}-teachers`} className="p-4 text-center border-b">
+                      {school.teachers}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Student-Teacher Ratio</td>
+                  {compareItems.map((school) => (
+                    <td key={`${school.id}-ratio`} className="p-4 text-center border-b">
+                      {school.studentTeacherRatio}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Founded</td>
+                  {compareItems.map((school) => (
+                    <td key={`${school.id}-founded`} className="p-4 text-center border-b">
+                      {school.founded}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Fees</td>
+                  {compareItems.map((school) => (
+                    <td key={`${school.id}-fees`} className="p-4 text-center border-b">
+                      {school.fees}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Admission Rate</td>
+                  {compareItems.map((school) => (
+                    <td key={`${school.id}-admission`} className="p-4 text-center border-b">
+                      {school.admissionRate}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Languages</td>
+                  {compareItems.map((school) => (
+                    <td key={`${school.id}-languages`} className="p-4 text-center border-b">
+                      {school.languages.join(", ")}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Programs</td>
+                  {compareItems.map((school) => (
+                    <td key={`${school.id}-programs`} className="p-4 text-center border-b">
+                      <div className="flex flex-wrap justify-center gap-1">
+                        {school.programs.map((program, index) => (
+                          <Badge key={index} variant="outline" className="mb-1">
+                            {program}
+                          </Badge>
+                        ))}
+                      </div>
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Facilities</td>
+                  {compareItems.map((school) => (
+                    <td key={`${school.id}-facilities`} className="p-4 text-center border-b">
+                      <div className="flex flex-wrap justify-center gap-1">
+                        {school.facilities.map((facility, index) => (
+                          <Badge key={index} variant="outline" className="mb-1">
+                            {facility}
+                          </Badge>
+                        ))}
+                      </div>
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b"></td>
+                  {compareItems.map((school) => (
+                    <td key={`${school.id}-action`} className="p-4 text-center border-b">
+                      <Button onClick={() => navigateTo && navigateTo("institutions-profile")}>View Profile</Button>
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="teachers" className="mt-0">
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr>
+                  <th className="w-1/4 p-4 text-left bg-gray-50 border-b"></th>
+                  {compareItems.map((teacher) => (
+                    <th key={teacher.id} className="p-4 text-center border-b">
+                      <Card className="border-0 shadow-none">
+                        <CardContent className="p-0 flex flex-col items-center">
+                          <img
+                            src={teacher.image || "/placeholder.svg"}
+                            alt={teacher.name}
+                            className="w-32 h-32 object-cover rounded-full mb-3"
+                          />
+                          <h3 className="font-bold text-lg mb-1">{teacher.name}</h3>
+                          <Badge variant="secondary" className="mb-2">
+                            {teacher.subjects[0]}
+                          </Badge>
+                          <div className="flex items-center mb-1">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`w-4 h-4 ${
+                                  i < Math.floor(teacher.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+                                }`}
+                                strokeWidth={1}
+                              />
+                            ))}
+                            <span className="text-sm ml-1 text-gray-500">
+                              {teacher.rating} ({teacher.reviewCount})
+                            </span>
+                          </div>
+                          <div className="flex items-center text-gray-500 text-sm">
+                            <MapPin className="w-3.5 h-3.5 mr-1" /> {teacher.location}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Subjects</td>
+                  {compareItems.map((teacher) => (
+                    <td key={`${teacher.id}-subjects`} className="p-4 text-center border-b">
+                      {teacher.subjects.join(", ")}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Experience</td>
+                  {compareItems.map((teacher) => (
+                    <td key={`${teacher.id}-experience`} className="p-4 text-center border-b">
+                      {teacher.experience} years
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Education</td>
+                  {compareItems.map((teacher) => (
+                    <td key={`${teacher.id}-education`} className="p-4 text-center border-b">
+                      {teacher.education}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Certifications</td>
+                  {compareItems.map((teacher) => (
+                    <td key={`${teacher.id}-certifications`} className="p-4 text-center border-b">
+                      <div className="flex flex-wrap justify-center gap-1">
+                        {teacher.certifications.map((cert, index) => (
+                          <Badge key={index} variant="outline" className="mb-1">
+                            {cert}
+                          </Badge>
+                        ))}
+                      </div>
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Teaching Style</td>
+                  {compareItems.map((teacher) => (
+                    <td key={`${teacher.id}-style`} className="p-4 text-center border-b">
+                      {teacher.teachingStyle}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Availability</td>
+                  {compareItems.map((teacher) => (
+                    <td key={`${teacher.id}-availability`} className="p-4 text-center border-b">
+                      {teacher.availability}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Hourly Rate</td>
+                  {compareItems.map((teacher) => (
+                    <td key={`${teacher.id}-rate`} className="p-4 text-center border-b">
+                      {teacher.hourlyRate}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Languages</td>
+                  {compareItems.map((teacher) => (
+                    <td key={`${teacher.id}-languages`} className="p-4 text-center border-b">
+                      {teacher.languages.join(", ")}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b">Specialties</td>
+                  {compareItems.map((teacher) => (
+                    <td key={`${teacher.id}-specialties`} className="p-4 text-center border-b">
+                      <div className="flex flex-wrap justify-center gap-1">
+                        {teacher.specialties.map((specialty, index) => (
+                          <Badge key={index} variant="outline" className="mb-1">
+                            {specialty}
+                          </Badge>
+                        ))}
+                      </div>
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium bg-gray-50 border-b"></td>
+                  {compareItems.map((teacher) => (
+                    <td key={`${teacher.id}-action`} className="p-4 text-center border-b">
+                      <Button onClick={() => navigateTo && navigateTo("teachers-profile")}>View Profile</Button>
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </TabsContent>
       </Tabs>
-
-      <TabsContent value="schools" className="mt-0">
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr>
-                <th className="w-1/4 p-4 text-left bg-gray-50 border-b"></th>
-                {compareItems.map((school) => (
-                  <th key={school.id} className="p-4 text-center border-b">
-                    <Card className="border-0 shadow-none">
-                      <CardContent className="p-0 flex flex-col items-center">
-                        <img
-                          src={school.image || "/placeholder.svg"}
-                          alt={school.name}
-                          className="w-32 h-32 object-cover rounded-lg mb-3"
-                        />
-                        <h3 className="font-bold text-lg mb-1">{school.name}</h3>
-                        <Badge variant="secondary" className="mb-2">
-                          {school.type}
-                        </Badge>
-                        <div className="flex items-center mb-1">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`w-4 h-4 ${
-                                i < Math.floor(school.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
-                              }`}
-                              strokeWidth={1}
-                            />
-                          ))}
-                          <span className="text-sm ml-1 text-gray-500">
-                            {school.rating} ({school.reviewCount})
-                          </span>
-                        </div>
-                        <div className="flex items-center text-gray-500 text-sm">
-                          <MapPin className="w-3.5 h-3.5 mr-1" /> {school.location}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Grades</td>
-                {compareItems.map((school) => (
-                  <td key={`${school.id}-grades`} className="p-4 text-center border-b">
-                    {school.grades}
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Students</td>
-                {compareItems.map((school) => (
-                  <td key={`${school.id}-students`} className="p-4 text-center border-b">
-                    {school.students}
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Teachers</td>
-                {compareItems.map((school) => (
-                  <td key={`${school.id}-teachers`} className="p-4 text-center border-b">
-                    {school.teachers}
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Student-Teacher Ratio</td>
-                {compareItems.map((school) => (
-                  <td key={`${school.id}-ratio`} className="p-4 text-center border-b">
-                    {school.studentTeacherRatio}
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Founded</td>
-                {compareItems.map((school) => (
-                  <td key={`${school.id}-founded`} className="p-4 text-center border-b">
-                    {school.founded}
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Fees</td>
-                {compareItems.map((school) => (
-                  <td key={`${school.id}-fees`} className="p-4 text-center border-b">
-                    {school.fees}
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Admission Rate</td>
-                {compareItems.map((school) => (
-                  <td key={`${school.id}-admission`} className="p-4 text-center border-b">
-                    {school.admissionRate}
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Languages</td>
-                {compareItems.map((school) => (
-                  <td key={`${school.id}-languages`} className="p-4 text-center border-b">
-                    {school.languages.join(", ")}
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Programs</td>
-                {compareItems.map((school) => (
-                  <td key={`${school.id}-programs`} className="p-4 text-center border-b">
-                    <div className="flex flex-wrap justify-center gap-1">
-                      {school.programs.map((program, index) => (
-                        <Badge key={index} variant="outline" className="mb-1">
-                          {program}
-                        </Badge>
-                      ))}
-                    </div>
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Facilities</td>
-                {compareItems.map((school) => (
-                  <td key={`${school.id}-facilities`} className="p-4 text-center border-b">
-                    <div className="flex flex-wrap justify-center gap-1">
-                      {school.facilities.map((facility, index) => (
-                        <Badge key={index} variant="outline" className="mb-1">
-                          {facility}
-                        </Badge>
-                      ))}
-                    </div>
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b"></td>
-                {compareItems.map((school) => (
-                  <td key={`${school.id}-action`} className="p-4 text-center border-b">
-                    <Button onClick={() => navigateTo && navigateTo("institutions-profile")}>View Profile</Button>
-                  </td>
-                ))}
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </TabsContent>
-
-      <TabsContent value="teachers" className="mt-0">
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr>
-                <th className="w-1/4 p-4 text-left bg-gray-50 border-b"></th>
-                {compareItems.map((teacher) => (
-                  <th key={teacher.id} className="p-4 text-center border-b">
-                    <Card className="border-0 shadow-none">
-                      <CardContent className="p-0 flex flex-col items-center">
-                        <img
-                          src={teacher.image || "/placeholder.svg"}
-                          alt={teacher.name}
-                          className="w-32 h-32 object-cover rounded-full mb-3"
-                        />
-                        <h3 className="font-bold text-lg mb-1">{teacher.name}</h3>
-                        <Badge variant="secondary" className="mb-2">
-                          {teacher.subjects[0]}
-                        </Badge>
-                        <div className="flex items-center mb-1">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`w-4 h-4 ${
-                                i < Math.floor(teacher.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
-                              }`}
-                              strokeWidth={1}
-                            />
-                          ))}
-                          <span className="text-sm ml-1 text-gray-500">
-                            {teacher.rating} ({teacher.reviewCount})
-                          </span>
-                        </div>
-                        <div className="flex items-center text-gray-500 text-sm">
-                          <MapPin className="w-3.5 h-3.5 mr-1" /> {teacher.location}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Subjects</td>
-                {compareItems.map((teacher) => (
-                  <td key={`${teacher.id}-subjects`} className="p-4 text-center border-b">
-                    {teacher.subjects.join(", ")}
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Experience</td>
-                {compareItems.map((teacher) => (
-                  <td key={`${teacher.id}-experience`} className="p-4 text-center border-b">
-                    {teacher.experience} years
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Education</td>
-                {compareItems.map((teacher) => (
-                  <td key={`${teacher.id}-education`} className="p-4 text-center border-b">
-                    {teacher.education}
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Certifications</td>
-                {compareItems.map((teacher) => (
-                  <td key={`${teacher.id}-certifications`} className="p-4 text-center border-b">
-                    <div className="flex flex-wrap justify-center gap-1">
-                      {teacher.certifications.map((cert, index) => (
-                        <Badge key={index} variant="outline" className="mb-1">
-                          {cert}
-                        </Badge>
-                      ))}
-                    </div>
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Teaching Style</td>
-                {compareItems.map((teacher) => (
-                  <td key={`${teacher.id}-style`} className="p-4 text-center border-b">
-                    {teacher.teachingStyle}
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Availability</td>
-                {compareItems.map((teacher) => (
-                  <td key={`${teacher.id}-availability`} className="p-4 text-center border-b">
-                    {teacher.availability}
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Hourly Rate</td>
-                {compareItems.map((teacher) => (
-                  <td key={`${teacher.id}-rate`} className="p-4 text-center border-b">
-                    {teacher.hourlyRate}
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Languages</td>
-                {compareItems.map((teacher) => (
-                  <td key={`${teacher.id}-languages`} className="p-4 text-center border-b">
-                    {teacher.languages.join(", ")}
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b">Specialties</td>
-                {compareItems.map((teacher) => (
-                  <td key={`${teacher.id}-specialties`} className="p-4 text-center border-b">
-                    <div className="flex flex-wrap justify-center gap-1">
-                      {teacher.specialties.map((specialty, index) => (
-                        <Badge key={index} variant="outline" className="mb-1">
-                          {specialty}
-                        </Badge>
-                      ))}
-                    </div>
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-4 font-medium bg-gray-50 border-b"></td>
-                {compareItems.map((teacher) => (
-                  <td key={`${teacher.id}-action`} className="p-4 text-center border-b">
-                    <Button onClick={() => navigateTo && navigateTo("teachers-profile")}>View Profile</Button>
-                  </td>
-                ))}
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </TabsContent>
     </div>
   )
 }
